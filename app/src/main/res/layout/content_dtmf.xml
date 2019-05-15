@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".dtmf.DTMFActivity"
+        tools:showIn="@layout/activity_dtmf" android:id="@+id/constraintLayout">
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/dtmfClRinging"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:visibility="visible">
+        <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                              android:id="@+id/guideline3"
+                                              android:orientation="horizontal"
+                                              app:layout_constraintGuide_percent="0.5"/>
+        <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                              android:id="@+id/guideline6"
+                                              android:orientation="vertical"
+                                              app:layout_constraintGuide_percent="0.5"/>
+        <TextView
+                android:id="@+id/dtmfTvAccountStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:text="Account status: "
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintBottom_toTopOf="@+id/dtmfTvAccountCodeLabel"/>
+        <TextView
+                android:id="@+id/dtmfTvAccountStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                app:layout_constraintBottom_toBottomOf="@+id/dtmfTvAccountStatusLabel"
+                app:layout_constraintTop_toTopOf="@+id/dtmfTvAccountStatusLabel"
+                app:layout_constraintStart_toEndOf="@+id/dtmfTvAccountStatusLabel"/>
+        <TextView
+                android:id="@+id/dtmfTvAccountCodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account code: "
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"/>
+        <TextView
+                android:id="@+id/dtmfTvAccountCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                app:layout_constraintBottom_toBottomOf="@+id/dtmfTvAccountCodeLabel"
+                app:layout_constraintTop_toTopOf="@+id/dtmfTvAccountCodeLabel"
+                app:layout_constraintStart_toEndOf="@+id/dtmfTvAccountCodeLabel"/>
+        <TextView
+                android:id="@+id/dtmfTvCallStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Call status: " app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/guideline3"/>
+        <TextView
+                android:id="@+id/dtmfTvCallStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                app:layout_constraintBottom_toBottomOf="@+id/dtmfTvCallStatusLabel"
+                app:layout_constraintTop_toTopOf="@+id/dtmfTvCallStatusLabel"
+                app:layout_constraintStart_toEndOf="@+id/dtmfTvCallStatusLabel"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/dtmfClDialer"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.constraint.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.8"/>
+
+        <android.support.constraint.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.2074364"/>
+
+        <android.support.constraint.ConstraintLayout
+                android:id="@+id/dialer_constraint_layout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline5"
+                app:layout_constraintVertical_bias="0.5">
+
+            <android.support.v7.widget.GridLayout
+                    android:id="@+id/dialer_grid"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:columnCount="3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rowCount="4">
+
+                <Button
+                        android:id="@+id/dtmfBtn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="0"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="0"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="2"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="0"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="3"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="2"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="0"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="4"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="0"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="1"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="5"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="1"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="6"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="2"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="1"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="7"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="0"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="2"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="8"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="2"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="9"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="2"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="2"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtnStar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="*"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="0"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="3"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtn0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="0"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="3"
+                        app:layout_rowWeight="1"/>
+
+                <Button
+                        android:id="@+id/dtmfBtnHash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:text="#"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_column="2"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        app:layout_row="3"
+                        app:layout_rowWeight="1"/>
+            </android.support.v7.widget.GridLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <EditText
+                android:id="@+id/dtmfEtNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimary"
+                android:ems="10"
+                android:singleLine="true"
+                android:ellipsize="start"
+                android:gravity="center"
+                android:inputType="none"
+                android:editable="false"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text=""
+                android:textColor="@color/primary_text_color"
+                android:textSize="28sp"
+                app:layout_constraintBottom_toTopOf="@+id/dialer_constraint_layout"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        <ImageButton
+                android:id="@+id/dtmfBtnDelete"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/colorPrimary"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/dtmfEtNumber"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/dtmfEtNumber"
+                app:layout_constraintTop_toTopOf="@id/dtmfEtNumber"
+                app:srcCompat="@android:drawable/ic_input_delete"
+                android:layout_marginRight="8dp"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Status"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toTopOf="@+id/dtmfEtNumber"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" android:id="@+id/dtmfTvDialpadCallStatus"/>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

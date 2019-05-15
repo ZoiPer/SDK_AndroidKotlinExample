@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:paddingBottom="8dp"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvHostnameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center"
+        android:text="Hostname:"
+        app:layout_constraintBottom_toBottomOf="@id/etHostname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/etHostname" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/etHostname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="sip4.zoiper.com"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvHostnameLabel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvUsernameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center"
+        android:text="Username:"
+        app:layout_constraintBottom_toBottomOf="@id/etUsername"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/etUsername" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/etUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="zdkTest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvUsernameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/etHostname" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvPasswordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center"
+        android:text="Password:"
+        app:layout_constraintBottom_toBottomOf="@id/etPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/etPassword" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/etPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="noPasswordForMeThankYou"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvPasswordLabel"
+        app:layout_constraintTop_toBottomOf="@id/etUsername" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvStatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Status:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStatusLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvStatusLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvStatusLabel" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnRegister"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorPrimary"
+        android:padding="10dp"
+        android:text="Register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatusLabel" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnUnregister"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@color/colorPrimary"
+        android:padding="10dp"
+        android:text="Unregister"
+        app:layout_constraintBottom_toBottomOf="@+id/btnRegister"
+        app:layout_constraintStart_toEndOf="@+id/btnRegister"
+        app:layout_constraintTop_toTopOf="@+id/btnRegister" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".incoming.IncomingCallActivity"
+        tools:showIn="@layout/activity_incoming_call">
+
+    <TextView
+            android:id="@+id/incomingTvWaiting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:gravity="center"
+            android:text="@string/waiting_for_call"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <RelativeLayout
+            android:id="@+id/incomingRlBase"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="80dp"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/incomingTvWaiting">
+
+        <TextView
+                android:id="@+id/incomingTvFrom"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:text="@string/incoming_call_from"
+                android:textColor="@color/primary_text_color"
+                android:textSize="18sp"
+                android:textStyle="italic"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/incomingTvSpeaker"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_alignStart="@+id/incomingTvFrom"
+                android:layout_alignLeft="@+id/incomingTvFrom"
+                android:layout_alignTop="@+id/incomingTvMute"
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/baseline_volume_up_24"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/speaker"
+                android:textColor="@color/primary_text_color"
+                android:textSize="12sp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/incomingTvMute"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/incomingTvFrom"
+                android:layout_alignEnd="@+id/incomingTvFrom"
+                android:layout_alignRight="@+id/incomingTvFrom"
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/baseline_headset_24"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/mute"
+                android:textColor="@color/primary_text_color"
+                android:textSize="12sp"/>
+
+        <ImageButton
+                android:id="@+id/incomingBtnAnswer"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_alignStart="@+id/incomingTvFrom"
+                android:layout_alignLeft="@+id/incomingTvFrom"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorPrimary"
+                app:srcCompat="@drawable/baseline_call_24"/>
+
+        <ImageButton
+                android:id="@+id/incomingBtnHangup"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_alignTop="@+id/incomingBtnAnswer"
+                android:layout_alignEnd="@+id/incomingTvFrom"
+                android:layout_alignRight="@+id/incomingTvFrom"
+                android:background="@color/colorPrimary"
+                app:srcCompat="@drawable/baseline_call_end_24"/>
+
+        <TextView
+                android:id="@+id/incomingTvStatus"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_above="@id/incomingBtnHangup"
+                android:layout_alignStart="@+id/incomingTvFrom"
+                android:layout_marginBottom="17dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:textColor="@color/primary_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_alignLeft="@+id/incomingTvFrom"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
