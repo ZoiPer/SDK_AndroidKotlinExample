@@ -144,7 +144,7 @@ class InCallActivity : BaseActivity(), CallEventsHandler {
                 timerDuration.start()
             }
             CallLineStatus.NA -> Log.d("CallLineStatus", "NA ")
-            CallLineStatus.Connecting -> Log.d("CallLineStatus", "Connecting ")
+            CallLineStatus.Dialing -> Log.d("CallLineStatus", "Connecting ")
             CallLineStatus.Failed -> Log.d("CallLineStatus", "Failed ")
             CallLineStatus.Ringing -> Log.d("CallLineStatus", "Ringing ")
             CallLineStatus.Held -> Log.d("CallLineStatus", "Held ")

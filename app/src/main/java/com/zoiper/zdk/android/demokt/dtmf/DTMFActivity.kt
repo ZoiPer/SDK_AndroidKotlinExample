@@ -260,10 +260,6 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
 
     }
 
-    override fun onAccountPushTokenReceived(account: Account?, s: String?) {
-
-    }
-
     override fun onAccountExtendedError(account: Account?, extendedError: ExtendedError?) {
 
     }
