@@ -33,5 +33,7 @@
     <string name="dtmf">DTMF</string>
     <string name="answer_button">Answer button</string>
     <string name="hangup_button">Hangup button</string>
+    <string name="start_log">Start log</string>
+    <string name="stop_log">Stop log</string>
 
 </resources>

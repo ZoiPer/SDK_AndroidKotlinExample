@@ -26,6 +26,7 @@ import com.zoiper.zdk.android.demokt.dtmf.DTMFActivity
 import com.zoiper.zdk.android.demokt.incoming.IncomingCallActivity
 import com.zoiper.zdk.android.demokt.messages.InMessagesActivity
 import com.zoiper.zdk.android.demokt.probe.SipTransportProbeActivity
+import com.zoiper.zdk.android.demokt.util.LoggingUtils
 import com.zoiper.zdk.android.demokt.video.InVideoCallActivity
 import kotlinx.android.synthetic.main.card_calls.*
 import kotlinx.android.synthetic.main.card_profile.*
@@ -44,6 +45,8 @@ const val INTENT_EXTRA_NUMBER = "number"
 const val INTENT_EXTRA_ACCOUNT_ID = "account_id"
 
 class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler {
+
+    private var logStarted = false;
 
     override fun onAccountStatusChanged(account: Account?, status: AccountStatus?, statusCode: Int) {
 //        Log.d(VESITESTING, "MainActivity.onAccountStatusChanged()")
@@ -79,6 +82,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
         btnProbe.setOnClickListener { startSipTransportProbe() }
         btnDial.setOnClickListener { startCallActivity() }
         btnDtmf.setOnClickListener { startDTMFActivity() }
+        btnLogging.setOnClickListener{ startLogging() }
     }
 
     override fun onResume() {
@@ -115,6 +119,21 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
         } else {
             printError("Account not registered")
             false
+        }
+    }
+
+    private fun startLogging() {
+        if (logStarted) {
+            btnLogging.setText(R.string.start_log)
+            logStarted = false
+            Toast.makeText(this, "Logging stopped !", Toast.LENGTH_LONG).show()
+        } else {
+            val filename = LoggingUtils.generateDebugLogFilename(this)
+            zdkContext.logger().logOpen(filename, "", LoggingLevel.Stack, 0)
+
+            btnLogging.setText(R.string.stop_log)
+            logStarted = true
+            Toast.makeText(this, "Logging started !", Toast.LENGTH_LONG).show();
         }
     }
 
