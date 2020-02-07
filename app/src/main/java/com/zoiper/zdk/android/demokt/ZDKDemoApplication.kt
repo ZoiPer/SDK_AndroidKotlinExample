@@ -154,7 +154,7 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
 
             // It is wise to offload that to a background thread because it takes some time
             val startSDK = zdkContext.activation().startSDK(
-                null, //certCacheFile.absolutePath,
+                certCacheFile.absolutePath,
                 credentials.username,
                 credentials.password
             )
