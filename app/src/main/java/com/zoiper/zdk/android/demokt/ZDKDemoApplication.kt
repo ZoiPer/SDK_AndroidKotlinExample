@@ -9,6 +9,7 @@ import com.zoiper.zdk.ActivationResult
 import com.zoiper.zdk.Context
 import com.zoiper.zdk.EventHandlers.ContextEventsHandler
 import com.zoiper.zdk.SecureCertData
+import com.zoiper.zdk.Types.ActivationStatus
 import com.zoiper.zdk.Types.LoggingLevel
 import com.zoiper.zdk.Types.ResultCode
 import com.zoiper.zdk.Types.TLSSecureSuiteType
@@ -65,40 +66,8 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
      * it to execute code on the main thread
      */
     override fun onContextActivationCompleted(context: Context?, activationResult: ActivationResult?) {
-
-        Log.d("VesiTesting", "I am still alive 1 - ${activationResult!!.status()}")
-
-        Thread {
-
-            Log.d("VesiTesting", "I am still alive 2")
-
-            activationResult.status() // This is where it crashes
-
-            Log.d("VesiTesting", "I am still alive 3")
-
-        }.start()
-
-        Log.d("VesiTesting", "I am still alive 4")
-    }
-
-//        {
-//            val opalanka = activationResult
-//
-//            Log.d("VesiTesting", "I am still alive 4")
-//
-//            opalanka?.status()
-//
-//            Log.d("VesiTesting", "I am still alive 5")
-//        }
-//        Log.d("VesiTesting", "I am still alive 6")
-
-//        when(activationResult?.status()){
-//            // !!!!!!!!!!!!!!!!DANGER!!!!!!!!!!!!!!
-//            // !!!!!!!!!!!SERIOUS NOTICE!!!!!!!!!!!
-//            // Notice how we call mainHandler.post, thus transferring the callback to the main thread
-//            // because onContextActivationCompleted() is called ON THE ZDK THREAD!!!!
-//            ActivationStatus.Success -> mainHandler.post{ activationSuccess() }
-//
+        when(activationResult?.status()) {
+            ActivationStatus.Success -> mainHandler.post{ activationSuccess() }
 //            ActivationStatus.Unparsable -> TODO("Implement me!!")
 //            ActivationStatus.FailedDecrypt -> TODO("Implement me!!")
 //            ActivationStatus.Failed -> TODO("Implement me!!")
@@ -110,8 +79,8 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
 //            ActivationStatus.FailedCurl -> TODO("Implement me!!")
 //            ActivationStatus.FailedSignCheck -> TODO("Implement me!!")
 //            ActivationStatus.Expired -> TODO("Implement me!!")
-//        }
-//    }
+        }
+    }
 
     private fun activationSuccess() {
         val startingResult = zdkContext.startContext()
@@ -138,7 +107,7 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
     private fun makeZoiperContext(): Context {
         try {
             val zdkContext = Context(applicationContext)
-            Log.d(VESITESTING, "zdkContext = new Context(applicationContext)")
+            Log.d(ZDKTESTING, "zdkContext = new Context(applicationContext)")
 
             if (ENABLE_LIB_DEBUG_LOG) {
                 zdkContext.logger().logOpen(
@@ -185,11 +154,11 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
 
             // It is wise to offload that to a background thread because it takes some time
             val startSDK = zdkContext.activation().startSDK(
-                certCacheFile.absolutePath,
+                null, //certCacheFile.absolutePath,
                 credentials.username,
                 credentials.password
             )
-            Log.d(VESITESTING, "zdkContext.activation().startSDK() = "+startSDK.text())
+            Log.d(ZDKTESTING, "zdkContext.activation().startSDK() = "+startSDK.text())
         }
     }
 

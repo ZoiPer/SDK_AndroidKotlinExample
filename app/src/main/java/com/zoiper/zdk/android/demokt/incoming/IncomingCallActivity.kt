@@ -16,7 +16,7 @@ import com.zoiper.zdk.Types.OwnershipChange
 import com.zoiper.zdk.Types.Zrtp.*
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.R
-import com.zoiper.zdk.android.demokt.VESITESTING
+import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
 import com.zoiper.zdk.android.demokt.util.TextViewSelectionUtils
 import kotlinx.android.synthetic.main.activity_incoming_call.*
@@ -86,13 +86,13 @@ class IncomingCallActivity : BaseActivity(), AccountEventsHandler, CallEventsHan
     }
 
     private fun onSpeakerClicked(view: View) {
-        Log.d(VESITESTING, "speaker clicked")
+        Log.d(ZDKTESTING, "speaker clicked")
 
         call?.let {
             if (view is AppCompatTextView) {
                 val newSelectedState = !view.isSelected
-                Log.d(VESITESTING, "onSpeaker() = ${it.onSpeaker()}")
-                Log.d(VESITESTING, "onSpeaker($newSelectedState)")
+                Log.d(ZDKTESTING, "onSpeaker() = ${it.onSpeaker()}")
+                Log.d(ZDKTESTING, "onSpeaker($newSelectedState)")
                 it.onSpeaker(newSelectedState)
                 TextViewSelectionUtils.setTextViewSelected(view, newSelectedState)
             }

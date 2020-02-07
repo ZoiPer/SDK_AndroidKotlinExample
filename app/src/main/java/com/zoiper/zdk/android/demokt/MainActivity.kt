@@ -39,7 +39,7 @@ import kotlin.reflect.KClass
  *@since 15/03/2019
  */
 
-const val VESITESTING = "VesiTesting"
+const val ZDKTESTING = "ZDKTesting"
 
 const val INTENT_EXTRA_NUMBER = "number"
 const val INTENT_EXTRA_ACCOUNT_ID = "account_id"
@@ -49,7 +49,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
     private var logStarted = false;
 
     override fun onAccountStatusChanged(account: Account?, status: AccountStatus?, statusCode: Int) {
-//        Log.d(VESITESTING, "MainActivity.onAccountStatusChanged()")
+//        Log.d(ZDKTESTING, "MainActivity.onAccountStatusChanged()")
         mainHandler.post{ this@MainActivity.printCurrentRegistrationStatus() }
     }
 
@@ -220,22 +220,22 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
         }
 
         account?.apply {
-            Log.d(VESITESTING, "account.createUser() = ${createUser().text()}")
-            Log.d(VESITESTING, "account.registerAccount() = ${registerAccount().text()}")
+            Log.d(ZDKTESTING, "account.createUser() = ${createUser().text()}")
+            Log.d(ZDKTESTING, "account.registerAccount() = ${registerAccount().text()}")
 
             zdkContext.accountProvider().setAsDefaultAccount(account)
-            Log.d(VESITESTING, "zdkContext.accountProvider().setAsDefaultAccount(account)")
+            Log.d(ZDKTESTING, "zdkContext.accountProvider().setAsDefaultAccount(account)")
         }
 
         printCurrentRegistrationStatus()
     }
 
     private fun printCurrentRegistrationStatus() {
-//        Log.d(VESITESTING, "MainActivity.printCurrentRegistrationStatus()")
+//        Log.d(ZDKTESTING, "MainActivity.printCurrentRegistrationStatus()")
 
         val accountStatus = account?.registrationStatus()
 
-//        Log.d(VESITESTING, "account?.registrationStatus() = ${accountStatus.toString()}")
+//        Log.d(ZDKTESTING, "account?.registrationStatus() = ${accountStatus.toString()}")
 
         if (accountStatus != null) {
             printStatus(accountStatus.toString())
@@ -265,26 +265,26 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
     ): Account {
         val accountProvider = zdkContext.accountProvider()
         val account = accountProvider.createUserAccount()
-        Log.d(VESITESTING, "accountProvider.createUserAccount()")
+        Log.d(ZDKTESTING, "accountProvider.createUserAccount()")
 
         // Set listeners on the account
         account.setProbeEventListener(this)
-        Log.d(VESITESTING, "account.setProbeEventListener(this)")
+        Log.d(ZDKTESTING, "account.setProbeEventListener(this)")
 
         account.setStatusEventListener(this)
-        Log.d(VESITESTING, "account.setStatusEventListener(this)")
+        Log.d(ZDKTESTING, "account.setStatusEventListener(this)")
 
         // Account name - not to be confused with username
         account.accountName(accountName)
-        Log.d(VESITESTING, "account.accountName($accountName)")
+        Log.d(ZDKTESTING, "account.accountName($accountName)")
 
         // Configurations
         getAudioCodecs().let {
             account.mediaCodecs(it)
-            Log.d(VESITESTING, "account.mediaCodecs($it)")
+            Log.d(ZDKTESTING, "account.mediaCodecs($it)")
         }
         account.configuration(createAccountConfig(accountProvider, username, hostname, password))
-        Log.d(VESITESTING, "account.configuration(accountConfig)")
+        Log.d(ZDKTESTING, "account.configuration(accountConfig)")
 
         return account
     }
@@ -296,22 +296,22 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
         password: String
     ): AccountConfig {
         val accountConfig = ap.createAccountConfiguration()
-        Log.d(VESITESTING, "ap.createAccountConfiguration()")
+        Log.d(ZDKTESTING, "ap.createAccountConfiguration()")
 
         accountConfig.userName(username)
-        Log.d(VESITESTING, "accountConfig.userName($username)")
+        Log.d(ZDKTESTING, "accountConfig.userName($username)")
 
         accountConfig.password(password)
-        Log.d(VESITESTING, "accountConfig.password($password)")
+        Log.d(ZDKTESTING, "accountConfig.password($password)")
 
         accountConfig.type(ProtocolType.SIP)
-        Log.d(VESITESTING, "accountConfig.type(ProtocolType.SIP)")
+        Log.d(ZDKTESTING, "accountConfig.type(ProtocolType.SIP)")
 
         accountConfig.sip(createSIPConfig(ap, hostname))
-        Log.d(VESITESTING, "accountConfig.sip(sipConfig)")
+        Log.d(ZDKTESTING, "accountConfig.sip(sipConfig)")
 
         accountConfig.reregistrationTime(60)
-        Log.d(VESITESTING, "accountConfig.reregistrationTime(60)")
+        Log.d(ZDKTESTING, "accountConfig.reregistrationTime(60)")
 
         return accountConfig
     }
@@ -331,40 +331,40 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
 
     private fun createSIPConfig(accountProvider: AccountProvider, hostname: String): SIPConfig {
         val sipConfig = accountProvider.createSIPConfiguration()
-        Log.d(VESITESTING, "accountProvider.createSIPConfiguration()")
+        Log.d(ZDKTESTING, "accountProvider.createSIPConfiguration()")
 
         sipConfig.transport(TransportType.TCP)
-        Log.d(VESITESTING, "sipConfig.transport(TransportType.TCP)")
+        Log.d(ZDKTESTING, "sipConfig.transport(TransportType.TCP)")
 
 
         sipConfig.domain(hostname)
-        Log.d(VESITESTING, "sipConfig.domain($hostname)")
+        Log.d(ZDKTESTING, "sipConfig.domain($hostname)")
 
         sipConfig.rPort(RPortType.Signaling)
-        Log.d(VESITESTING, "sipConfig.rPort(RPortType.Signaling)")
+        Log.d(ZDKTESTING, "sipConfig.rPort(RPortType.Signaling)")
 
 
         sipConfig.enablePrivacy(Configuration.PRIVACY)
-        Log.d(VESITESTING, "sipConfig.enablePrivacy(Configuration.PRIVACY)")
+        Log.d(ZDKTESTING, "sipConfig.enablePrivacy(Configuration.PRIVACY)")
 
         sipConfig.enablePreconditions(Configuration.PRECONDITIONS)
-        Log.d(VESITESTING, "sipConfig.enablePreconditions(Configuration.PRECONDITIONS)")
+        Log.d(ZDKTESTING, "sipConfig.enablePreconditions(Configuration.PRECONDITIONS)")
 
         sipConfig.enableSRTP(Configuration.SRTP) // Works only with TLS!
-        Log.d(VESITESTING, "sipConfig.enableSRTP(Configuration.SRTP)")
+        Log.d(ZDKTESTING, "sipConfig.enableSRTP(Configuration.SRTP)")
 
         sipConfig.enableVideoFMTP(Configuration.VIDEO_FMTP)
-        Log.d(VESITESTING, "sipConfig.enableVideoFMTP(Configuration.VIDEO_FMTP)")
+        Log.d(ZDKTESTING, "sipConfig.enableVideoFMTP(Configuration.VIDEO_FMTP)")
 
 
         if (Configuration.STUN) {
             sipConfig.stun(createStunConfig(accountProvider))
-            Log.d(VESITESTING, "sipConfig.stun(createStunConfig(accountProvider))")
+            Log.d(ZDKTESTING, "sipConfig.stun(createStunConfig(accountProvider))")
 
         }
         if (Configuration.ZRTP) {
             sipConfig.zrtp(createZRTPConfig(accountProvider))
-            Log.d(VESITESTING, "sipConfig.zrtp(createZRTPConfig(accountProvider))")
+            Log.d(ZDKTESTING, "sipConfig.zrtp(createZRTPConfig(accountProvider))")
 
         }
 
@@ -375,7 +375,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
             else
                 RTCPFeedbackType.Off
         )
-        Log.d(VESITESTING, "sipConfig.rtcpFeedback(${if (Configuration.RTCP_FEEDBACK)
+        Log.d(ZDKTESTING, "sipConfig.rtcpFeedback(${if (Configuration.RTCP_FEEDBACK)
             RTCPFeedbackType.Compatibility
         else
             RTCPFeedbackType.Off})")

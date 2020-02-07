@@ -4,19 +4,15 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.zoiper.zdk.Account
-import com.zoiper.zdk.Call
 import com.zoiper.zdk.EventHandlers.AccountEventsHandler
 import com.zoiper.zdk.EventHandlers.MessageEventsHandler
-import com.zoiper.zdk.ExtendedError
 import com.zoiper.zdk.Result
-import com.zoiper.zdk.Types.AccountStatus
 import com.zoiper.zdk.Types.MessageType
-import com.zoiper.zdk.Types.OwnershipChange
 import com.zoiper.zdk.Types.ResultCode
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_NUMBER
 import com.zoiper.zdk.android.demokt.R
-import com.zoiper.zdk.android.demokt.VESITESTING
+import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_in_messages.*
 import java.text.SimpleDateFormat
@@ -85,20 +81,20 @@ class InMessagesActivity : BaseActivity(), MessageEventsHandler, AccountEventsHa
     }
 
     private fun sendMessage(content: String, number: String): Result? {
-        Log.d(VESITESTING, "account.createMessage(MessageType.Simple)")
+        Log.d(ZDKTESTING, "account.createMessage(MessageType.Simple)")
         val message = account?.createMessage(MessageType.Simple)
 
-        Log.d(VESITESTING, "if(message == null) return;")
+        Log.d(ZDKTESTING, "if(message == null) return;")
         if(message == null) return null
 
         message.setMessageEventListener(this)
-        Log.d(VESITESTING, "message.setMessageEventListener(this)")
+        Log.d(ZDKTESTING, "message.setMessageEventListener(this)")
 
         message.peer(number)
-        Log.d(VESITESTING, "message.peer($number)")
+        Log.d(ZDKTESTING, "message.peer($number)")
 
         message.content(content)
-        Log.d(VESITESTING, "message.content($content)")
+        Log.d(ZDKTESTING, "message.content($content)")
 
         return account
             ?.createMessage(MessageType.Simple)
@@ -109,7 +105,7 @@ class InMessagesActivity : BaseActivity(), MessageEventsHandler, AccountEventsHa
             }
             ?.sendMessage()
             ?.also{
-                Log.d(VESITESTING, "message.sendMessage() = ${it.text()}")
+                Log.d(ZDKTESTING, "message.sendMessage() = ${it.text()}")
             }
     }
 
@@ -136,7 +132,7 @@ class InMessagesActivity : BaseActivity(), MessageEventsHandler, AccountEventsHa
 
     override fun onAccountChatMessageReceived(account: Account?, peer: String?, message: String?) {
         runOnUiThread {
-            Log.d(VESITESTING, "onAccountChatMessageReceived($account, $peer, $message)")
+            Log.d(ZDKTESTING, "onAccountChatMessageReceived($account, $peer, $message)")
 
             messagesAdapter.addMessage(MessagesAdapter.ReceivedMessage(
                 message ?: "",

@@ -46,9 +46,9 @@ class SipTransportProbeActivity : BaseActivity(), SIPProbeEventsHandler {
 
     override fun onZoiperLoaded() {
         sipProbeFab.setOnClickListener {
+            account?.setProbeEventListener(this)
             account?.probeSipTransport(domain, null, username, null, password)
         }
-        account?.setProbeEventListener(this)
     }
 
     override fun onProbeError(account: Account?, probeState: ProbeState?, extendedError: ExtendedError?) {
