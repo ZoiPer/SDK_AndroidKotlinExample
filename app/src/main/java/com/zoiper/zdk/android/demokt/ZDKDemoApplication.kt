@@ -3,16 +3,14 @@ package com.zoiper.zdk.android.demokt
 import android.app.Application
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import com.github.anrwatchdog.ANRWatchDog
 import com.zoiper.zdk.Account
 import com.zoiper.zdk.ActivationResult
 import com.zoiper.zdk.Context
 import com.zoiper.zdk.EventHandlers.ContextEventsHandler
 import com.zoiper.zdk.SecureCertData
-import com.zoiper.zdk.Types.ActivationStatus
-import com.zoiper.zdk.Types.LoggingLevel
-import com.zoiper.zdk.Types.ResultCode
-import com.zoiper.zdk.Types.TLSSecureSuiteType
+import com.zoiper.zdk.Types.*
 import com.zoiper.zdk.android.demokt.network.NetworkChangeReceiver
 import com.zoiper.zdk.android.demokt.util.Credentials
 import java.io.File
@@ -54,7 +52,20 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
      * it to execute code on the main thread
      */
     override fun onContextSecureCertError(context: Context?, secureCert: SecureCertData?) {
-        TODO("PLEASE IMPLEMENT ME ADEQUATELY!")
+        //TODO("PLEASE IMPLEMENT ME ADEQUATELY!")
+        if(secureCert?.errorMask() != CertificateError.None.ordinal) {
+            mainHandler.post{ certificateError(secureCert) }
+        }
+    }
+
+    private fun certificateError(secureCert: SecureCertData?) {
+        Toast.makeText(this, "SecureCertError: expected= " + secureCert?.expectedName() + ", got= " + secureCert?.actualNameList(), Toast.LENGTH_LONG).show()
+
+        //TODO("PLEASE IMPLEMENT ME ADEQUATELY!")
+        // !!!!!!!!!!!SERIOUS NOTICE!!!!!!!!!!!
+        // Do this ONLY after USER request!!!
+        // The user should be warned that using exceptions makes TLS much less secure than they think it is.
+        zdkContext.encryptionConfiguration()!!.addKnownCertificate(secureCert)
     }
 
     /**
