@@ -14,7 +14,6 @@ import com.zoiper.zdk.Configurations.StunConfig
 import com.zoiper.zdk.Configurations.ZRTPConfig
 import com.zoiper.zdk.Context
 import com.zoiper.zdk.EventHandlers.AccountEventsHandler
-import com.zoiper.zdk.EventHandlers.SIPProbeEventsHandler
 import com.zoiper.zdk.Providers.AccountProvider
 import com.zoiper.zdk.Types.*
 import com.zoiper.zdk.Types.Zrtp.*
@@ -44,7 +43,7 @@ const val ZDKTESTING = "ZDKTesting"
 const val INTENT_EXTRA_NUMBER = "number"
 const val INTENT_EXTRA_ACCOUNT_ID = "account_id"
 
-class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler {
+class MainActivity : BaseActivity(), AccountEventsHandler {
 
     private var logStarted = false;
 
@@ -144,9 +143,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
     }
 
     private fun startSipTransportProbe() {
-        if (checkRegistration()) {
-            startActivity(SipTransportProbeActivity::class.java)
-        }
+        startActivity(SipTransportProbeActivity::class.java)
     }
 
     private fun startConferenceActivity() {
@@ -266,10 +263,6 @@ class MainActivity : BaseActivity(), AccountEventsHandler, SIPProbeEventsHandler
         val accountProvider = zdkContext.accountProvider()
         val account = accountProvider.createUserAccount()
         Log.d(ZDKTESTING, "accountProvider.createUserAccount()")
-
-        // Set listeners on the account
-        account.setProbeEventListener(this)
-        Log.d(ZDKTESTING, "account.setProbeEventListener(this)")
 
         account.setStatusEventListener(this)
         Log.d(ZDKTESTING, "account.setStatusEventListener(this)")

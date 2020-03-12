@@ -27,8 +27,7 @@ class SipTransportProbeActivity : BaseActivity(), SIPProbeEventsHandler {
     private val username = "zdkTest"
 
     private val account by lazy {
-        val accountId = intent.getLongExtra(INTENT_EXTRA_ACCOUNT_ID, -1)
-        getAccount(accountId)
+        zdkContext.accountProvider().createUserAccount()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
