@@ -3,8 +3,10 @@ package com.zoiper.zdk.android.demokt.video
 import android.os.Build
 import com.zoiper.zdk.Call
 import com.zoiper.zdk.CallStatus
+import com.zoiper.zdk.EventHandlers.VideoEventsHandler
 import com.zoiper.zdk.ExtendedError
 import com.zoiper.zdk.NetworkStatistics
+import com.zoiper.zdk.Types.OriginType
 import com.zoiper.zdk.Types.Zrtp.*
 
 /**
@@ -12,7 +14,7 @@ import com.zoiper.zdk.Types.Zrtp.*
  *
  * @since 31/01/2019
  */
-class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.zdk.EventHandlers.CallEventsHandler {
+class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.zdk.EventHandlers.CallEventsHandler, VideoEventsHandler {
 
     override fun onCallStatusChanged(call: Call?, callStatus: CallStatus?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -35,7 +37,7 @@ class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.
     }
 
     override fun onCallNetworkQualityLevel(call: Call?, i: Int, i1: Int) {
-        return
+        activity.printGeneralThreadSafe("onCallNetworkQualityLevel: call= ${call?.callHandle()}; callChannel= $i; qualityLevel= $i1")
     }
 
     override fun onCallTransferSucceeded(call: Call?) {
@@ -72,5 +74,21 @@ class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.
 
     override fun onCallZrtpSecondaryError(call: Call?, i: Int, extendedError: ExtendedError?) {
         return
+    }
+
+    override fun onVideoStopped(call: Call?, origin: OriginType?) {
+        activity.printGeneralThreadSafe("onVideoStopped: call= ${call?.callHandle()}; origin= ${origin.toString()}")
+    }
+
+    override fun onVideoFormatSelected(call: Call?, dir: OriginType?, width: Int, height: Int, fps: Float) {
+        activity.printGeneralThreadSafe("onVideoFormatSelected: call= ${call?.callHandle()}; dir= ${dir?.toString()}; res= ${width}x${height}@${fps}")
+    }
+
+    override fun onVideoStarted(call: Call?, origin: OriginType?) {
+        activity.printGeneralThreadSafe("onVideoStarted: call= ${call?.callHandle()}; origin= ${origin.toString()}")
+    }
+
+    override fun onVideoCameraChanged(call: Call?) {
+        activity.printGeneralThreadSafe("onVideoCameraChanged: call= ${call?.callHandle()}")
     }
 }

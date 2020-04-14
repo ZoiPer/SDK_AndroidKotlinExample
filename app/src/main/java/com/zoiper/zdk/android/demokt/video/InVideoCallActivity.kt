@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.support.annotation.RequiresApi
+import android.util.Log
 import android.view.Surface
 import android.view.WindowManager
 import android.widget.Toast
@@ -19,6 +20,7 @@ import com.zoiper.zdk.Types.VideoFrameFormat
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_NUMBER
 import com.zoiper.zdk.android.demokt.R
+import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
 import com.zoiper.zdk.android.demokt.video.out.I420Helper
 import kotlinx.android.synthetic.main.activity_in_video_call.*
@@ -112,6 +114,7 @@ class InVideoCallActivity : BaseActivity() {
                 call = createOrGetCall(account, calls, number)
 
                 call?.setCallStatusListener(CallEventsHandler(this))
+                call?.setVideoCallNotificiationsListener(CallEventsHandler(this))
 
                 call?.setVideoRendererNotificationsListener(object : VideoRendererEventsHandler {
                     override fun onVideoFrameReceived(pBuffer: ByteArray?, length: Int, width: Int, height: Int) {
@@ -145,6 +148,8 @@ class InVideoCallActivity : BaseActivity() {
 
     internal fun printStatusThreadSafe(status: String) = mainHandler.post { videoCallTvStatus?.text = status }
     internal fun printNetworkThreadSafe(status: String) = mainHandler.post { videoCallTvNetwork.text = status }
+
+    internal fun printGeneralThreadSafe(text: String) = mainHandler.post{ Log.i(ZDKTESTING, text) }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Throws(CameraAccessException::class)
