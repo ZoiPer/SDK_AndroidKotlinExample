@@ -319,6 +319,16 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
         codecs.add(AudioVideoCodecs.OPUS_WIDE)
         codecs.add(AudioVideoCodecs.PCMU)
         codecs.add(AudioVideoCodecs.vp8) // This is for the videocall
+
+        /**
+        * !!!!!!!!!!!!!!!!DANGER!!!!!!!!!!!!!!
+        * !!!!!!!!!!!SERIOUS NOTICE!!!!!!!!!!!
+        * The H264 video codec is "patent encumbered"!!!
+        * In order to use the H264 codec you need a license from the codec's patent holder!!!
+        * The ZDK does not provide such a license and the ZDK user is obligated of purchasing such!
+        */
+        // codecs.add(AudioVideoCodecs.h264) // This is for the videocall
+
         return codecs
     }
 
