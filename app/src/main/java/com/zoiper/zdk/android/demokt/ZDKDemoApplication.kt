@@ -51,7 +51,7 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
      * Consider using mainHandler.post{} inside
      * it to execute code on the main thread
      */
-    override fun onContextSecureCertError(context: Context?, secureCert: SecureCertData?) {
+    override fun onContextSecureCertStatus(context: Context?, secureCert: SecureCertData?) {
         //TODO("PLEASE IMPLEMENT ME ADEQUATELY!")
         if(secureCert?.errorMask() != CertificateError.None.ordinal) {
             mainHandler.post{ certificateError(secureCert) }
