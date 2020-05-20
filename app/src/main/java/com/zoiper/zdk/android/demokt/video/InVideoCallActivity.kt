@@ -114,7 +114,6 @@ class InVideoCallActivity : BaseActivity() {
                 call = createOrGetCall(account, calls, number)
 
                 call?.setCallStatusListener(CallEventsHandler(this))
-                call?.setVideoCallNotificiationsListener(CallEventsHandler(this))
 
                 call?.setVideoRendererNotificationsListener(object : VideoRendererEventsHandler {
                     override fun onVideoFrameReceived(pBuffer: ByteArray?, length: Int, width: Int, height: Int) {

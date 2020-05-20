@@ -3,7 +3,6 @@ package com.zoiper.zdk.android.demokt.video
 import android.os.Build
 import com.zoiper.zdk.Call
 import com.zoiper.zdk.CallStatus
-import com.zoiper.zdk.EventHandlers.VideoEventsHandler
 import com.zoiper.zdk.ExtendedError
 import com.zoiper.zdk.NetworkStatistics
 import com.zoiper.zdk.Types.OriginType
@@ -14,7 +13,7 @@ import com.zoiper.zdk.Types.Zrtp.*
  *
  * @since 31/01/2019
  */
-class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.zdk.EventHandlers.CallEventsHandler, VideoEventsHandler {
+class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.zdk.EventHandlers.CallEventsHandler {
 
     override fun onCallStatusChanged(call: Call?, callStatus: CallStatus?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
