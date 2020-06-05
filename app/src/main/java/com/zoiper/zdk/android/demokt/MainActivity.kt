@@ -165,8 +165,14 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
     }
 
     private fun startCallActivity() {
-        if (checkRegistration() && checkNumberEntered()) {
-            startActivity(InCallActivity::class)
+        if (account != null) {
+            if (checkNumberEntered()) {
+                startActivity(InCallActivity::class)
+            } else {
+                printError("Fill in number to dial")
+            }
+        } else {
+            printError("Account not registered")
         }
     }
 
@@ -190,8 +196,14 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
     }
 
     private fun startVideoCallActivity() {
-        if (checkRegistration() && checkNumberEntered()) {
-            startActivity(InVideoCallActivity::class.java)
+        if (account != null) {
+            if (checkNumberEntered()) {
+                startActivity(InVideoCallActivity::class.java)
+            } else {
+                printError("Fill in number to dial")
+            }
+        } else {
+            printError("Account not registered")
         }
     }
 
