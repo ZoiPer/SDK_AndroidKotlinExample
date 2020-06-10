@@ -450,8 +450,8 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
         private const val STUN = false
         private const val SRTP = false
         private const val ZRTP = false
-        private const val VIDEO_FMTP = false
-        private const val RTCP_FEEDBACK = false
+        private const val VIDEO_FMTP = true
+        private const val RTCP_FEEDBACK = true
         private const val SIP_TRANSPORT_PROBE = false
     }
 }
