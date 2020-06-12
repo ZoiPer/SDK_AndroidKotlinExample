@@ -79,6 +79,9 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
     override fun onContextActivationCompleted(context: Context?, activationResult: ActivationResult?) {
         when(activationResult?.status()) {
             ActivationStatus.Success -> mainHandler.post{ activationSuccess() }
+            else -> {
+                mainHandler.post{ Toast.makeText(this, "onContextActivationCompleted: status= ${activationResult?.status()}; reason= ${activationResult?.reason()}", Toast.LENGTH_LONG).show() }
+            }
 //            ActivationStatus.Unparsable -> TODO("Implement me!!")
 //            ActivationStatus.FailedDecrypt -> TODO("Implement me!!")
 //            ActivationStatus.Failed -> TODO("Implement me!!")
