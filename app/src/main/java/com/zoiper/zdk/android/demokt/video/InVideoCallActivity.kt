@@ -154,17 +154,29 @@ class InVideoCallActivity : BaseActivity() {
     @Throws(CameraAccessException::class)
     private fun chooseCamera() {
         cameraManager
-            .cameraIdList
-            .let { cameraIdList ->
-                for (cid in cameraIdList) {
-                    val cameraCharacteristics = cameraManager.getCameraCharacteristics(cid)
+                .cameraIdList
+                .let { cameraIdList ->
+                    for (cid in cameraIdList) {
+                        val cameraCharacteristics = cameraManager.getCameraCharacteristics(cid)
 
-                    if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT) {
+                        if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT) {
+                            val sensorOrientation = cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)
+                            if(sensorOrientation != null) {
+                                initCamera(cid, sensorOrientation)
+                                return
+                            }
+                        }
+                    }
+                    if (cameraIdList.isNotEmpty()) {
+                        Toast.makeText(this, "No front facing camera found. Opening first available.", Toast.LENGTH_SHORT).show()
+                        val cameraIdFirstCamera = cameraIdList[0]
+                        val cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraIdFirstCamera)
                         val sensorOrientation = cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)
-                        if(sensorOrientation != null) initCamera(cid, sensorOrientation)
+                        if(sensorOrientation != null) initCamera(cameraIdFirstCamera, sensorOrientation)
+                    } else {
+                        Toast.makeText(this, "No cameras found.", Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
     }
 
     private fun initI420Helper(sensorOrientation: Int) {
