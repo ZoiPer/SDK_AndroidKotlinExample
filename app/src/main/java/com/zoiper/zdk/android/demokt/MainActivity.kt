@@ -15,6 +15,7 @@ import com.zoiper.zdk.Configurations.ZRTPConfig
 import com.zoiper.zdk.Context
 import com.zoiper.zdk.EventHandlers.AccountEventsHandler
 import com.zoiper.zdk.Providers.AccountProvider
+import com.zoiper.zdk.Result
 import com.zoiper.zdk.Types.*
 import com.zoiper.zdk.Types.Zrtp.*
 import com.zoiper.zdk.android.demokt.base.BaseActivity
@@ -71,6 +72,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
     }
 
     private fun setClickListeners() {
+        btnCreate.setOnClickListener { createAccount(zdkContext) }
         btnRegister.setOnClickListener { registerUser(zdkContext) }
         btnUnregister.setOnClickListener { account?.unRegister() }
 
@@ -442,6 +444,28 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
         zrtpConfig.cacheExpiry(-1) // No expiry
 
         return zrtpConfig
+    }
+
+    private fun createAccount(context: Context) {
+        val hostname = etHostname.getTextOrError()
+        val username = etUsername.getTextOrError()
+        val password = etPassword.getTextOrError()
+
+        if (hostname == null
+                || username == null
+                || password == null) {
+            return
+        }
+
+        if (account == null) {
+            account = createAccount(context, username, username, hostname, password)
+            val createResult: Result? = account?.createUser()
+            if (createResult != null) {
+                tvStatus.text = if (createResult.code() == ResultCode.Ok) "Created" else "Not Created"
+            }
+        } else {
+            Toast.makeText(this, "Account already created.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private companion object Configuration {
