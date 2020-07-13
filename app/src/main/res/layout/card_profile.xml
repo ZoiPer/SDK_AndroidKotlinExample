@@ -106,6 +106,20 @@
         app:layout_constraintTop_toTopOf="@+id/tvStatusLabel" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnCreate"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorPrimary"
+        android:padding="10dp"
+        android:text="Create"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatusLabel" />
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/btnRegister"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
@@ -116,7 +130,7 @@
         android:background="@color/colorPrimary"
         android:padding="10dp"
         android:text="Register"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnCreate"
         app:layout_constraintTop_toBottomOf="@+id/tvStatusLabel" />
 
     <android.support.v7.widget.AppCompatButton
