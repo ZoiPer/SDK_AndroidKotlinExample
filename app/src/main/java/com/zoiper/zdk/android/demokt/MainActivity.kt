@@ -174,7 +174,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
                 printError("Fill in number to dial")
             }
         } else {
-            printError("Account not registered")
+            printError("Account not created")
         }
     }
 
@@ -406,23 +406,23 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
 
         if (account == null) {
             val accountProvider = zdkContext.accountProvider()
-            val account = accountProvider.createUserAccount()
+            account = accountProvider.createUserAccount()
             Log.d(ZDKTESTING, "accountProvider.createUserAccount()")
 
-            account.setStatusEventListener(this)
+            account?.setStatusEventListener(this)
             Log.d(ZDKTESTING, "account.setStatusEventListener(this)")
 
             // Account name - not to be confused with username
             val accountName = "$username@$hostname"
-            account.accountName(accountName)
+            account?.accountName(accountName)
             Log.d(ZDKTESTING, "account.accountName($accountName)")
 
             // Configurations
             getAudioCodecs().let {
-                account.mediaCodecs(it)
+                account?.mediaCodecs(it)
                 Log.d(ZDKTESTING, "account.mediaCodecs($it)")
             }
-            account.configuration(createAccountConfig(accountProvider, username, hostname, password))
+            account?.configuration(createAccountConfig(accountProvider, username, hostname, password))
             Log.d(ZDKTESTING, "account.configuration(accountConfig)")
 
             val createResult: Result? = account?.createUser()
