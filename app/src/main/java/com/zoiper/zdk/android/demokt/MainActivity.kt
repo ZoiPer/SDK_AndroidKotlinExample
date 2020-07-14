@@ -216,26 +216,12 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
      * The initialized ZDK context.
      */
     private fun registerUser(zdkContext: Context) {
-        val hostname = etHostname.getTextOrError()
-        val username = etUsername.getTextOrError()
-        val password = etPassword.getTextOrError()
-
-        if (hostname == null
-            || username == null
-            || password == null) {
-            return
-        }
-
         if (account == null) {
-            account = createAccount(zdkContext, username, username, hostname, password)
+            createAccount(zdkContext)
         }
 
         account?.apply {
-            Log.d(ZDKTESTING, "account.createUser() = ${createUser().text()}")
             Log.d(ZDKTESTING, "account.registerAccount() = ${registerAccount().text()}")
-
-            zdkContext.accountProvider().setAsDefaultAccount(account)
-            Log.d(ZDKTESTING, "zdkContext.accountProvider().setAsDefaultAccount(account)")
         }
 
         printCurrentRegistrationStatus()
@@ -257,43 +243,6 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
         if (tvStatus != null) {
             tvStatus.text = status
         }
-    }
-
-    /**
-     * Create new account.
-     *
-     * @param zdkContext
-     * The initialized ZDK context.
-     * @param accountName
-     * The account name.
-     */
-    private fun createAccount(
-        zdkContext: Context,
-        accountName: String,
-        hostname: String,
-        username: String,
-        password: String
-    ): Account {
-        val accountProvider = zdkContext.accountProvider()
-        val account = accountProvider.createUserAccount()
-        Log.d(ZDKTESTING, "accountProvider.createUserAccount()")
-
-        account.setStatusEventListener(this)
-        Log.d(ZDKTESTING, "account.setStatusEventListener(this)")
-
-        // Account name - not to be confused with username
-        account.accountName(accountName)
-        Log.d(ZDKTESTING, "account.accountName($accountName)")
-
-        // Configurations
-        getAudioCodecs().let {
-            account.mediaCodecs(it)
-            Log.d(ZDKTESTING, "account.mediaCodecs($it)")
-        }
-        account.configuration(createAccountConfig(accountProvider, username, hostname, password))
-        Log.d(ZDKTESTING, "account.configuration(accountConfig)")
-
-        return account
     }
 
     private fun createAccountConfig(
@@ -451,18 +400,40 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
         val username = etUsername.getTextOrError()
         val password = etPassword.getTextOrError()
 
-        if (hostname == null
-                || username == null
-                || password == null) {
+        if (hostname == null || username == null || password == null) {
             return
         }
 
         if (account == null) {
-            account = createAccount(context, username, username, hostname, password)
+            val accountProvider = zdkContext.accountProvider()
+            val account = accountProvider.createUserAccount()
+            Log.d(ZDKTESTING, "accountProvider.createUserAccount()")
+
+            account.setStatusEventListener(this)
+            Log.d(ZDKTESTING, "account.setStatusEventListener(this)")
+
+            // Account name - not to be confused with username
+            val accountName = "$username@$hostname"
+            account.accountName(accountName)
+            Log.d(ZDKTESTING, "account.accountName($accountName)")
+
+            // Configurations
+            getAudioCodecs().let {
+                account.mediaCodecs(it)
+                Log.d(ZDKTESTING, "account.mediaCodecs($it)")
+            }
+            account.configuration(createAccountConfig(accountProvider, username, hostname, password))
+            Log.d(ZDKTESTING, "account.configuration(accountConfig)")
+
             val createResult: Result? = account?.createUser()
             if (createResult != null) {
                 tvStatus.text = if (createResult.code() == ResultCode.Ok) "Created" else "Not Created"
             }
+
+            Log.d(ZDKTESTING, "account.createUser() = ${createResult?.text()}")
+
+            zdkContext.accountProvider().setAsDefaultAccount(account)
+            Log.d(ZDKTESTING, "zdkContext.accountProvider().setAsDefaultAccount(account)")
         } else {
             Toast.makeText(this, "Account already created.", Toast.LENGTH_SHORT).show()
         }
