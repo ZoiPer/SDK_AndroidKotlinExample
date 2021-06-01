@@ -422,7 +422,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
                 account?.mediaCodecs(it)
                 Log.d(ZDKTESTING, "account.mediaCodecs($it)")
             }
-            account?.configuration(createAccountConfig(accountProvider, username, hostname, password))
+            account?.configuration(createAccountConfig(accountProvider, hostname, username, password))
             Log.d(ZDKTESTING, "account.configuration(accountConfig)")
 
             val createResult: Result? = account?.createUser()
