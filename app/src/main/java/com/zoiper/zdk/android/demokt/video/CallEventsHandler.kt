@@ -5,6 +5,7 @@ import com.zoiper.zdk.Call
 import com.zoiper.zdk.CallStatus
 import com.zoiper.zdk.ExtendedError
 import com.zoiper.zdk.NetworkStatistics
+import com.zoiper.zdk.Types.NetworkQualityLevel
 import com.zoiper.zdk.Types.OriginType
 import com.zoiper.zdk.Types.Zrtp.*
 
@@ -35,7 +36,7 @@ class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.
         }
     }
 
-    override fun onCallNetworkQualityLevel(call: Call?, i: Int, i1: Int) {
+    override fun onCallNetworkQualityLevel(call: Call?, i: Int, i1: NetworkQualityLevel) {
         activity.printGeneralThreadSafe("onCallNetworkQualityLevel: call= ${call?.callHandle()}; callChannel= $i; qualityLevel= $i1")
     }
 

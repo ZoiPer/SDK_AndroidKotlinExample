@@ -196,7 +196,7 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
 
     }
 
-    override fun onCallNetworkQualityLevel(call: Call?, i: Int, i1: Int) {
+    override fun onCallNetworkQualityLevel(call: Call?, i: Int, i1: NetworkQualityLevel) {
 
     }
 

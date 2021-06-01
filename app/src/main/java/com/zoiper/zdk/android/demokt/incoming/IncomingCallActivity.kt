@@ -12,6 +12,7 @@ import com.zoiper.zdk.EventHandlers.AccountEventsHandler
 import com.zoiper.zdk.EventHandlers.CallEventsHandler
 import com.zoiper.zdk.Types.AccountStatus
 import com.zoiper.zdk.Types.CallLineStatus
+import com.zoiper.zdk.Types.NetworkQualityLevel
 import com.zoiper.zdk.Types.OwnershipChange
 import com.zoiper.zdk.Types.Zrtp.*
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
@@ -187,7 +188,7 @@ class IncomingCallActivity : BaseActivity(), AccountEventsHandler, CallEventsHan
 
     }
 
-    override fun onCallNetworkQualityLevel(call: Call?, i: Int, i1: Int) {
+    override fun onCallNetworkQualityLevel(call: Call?, i: Int, i1: NetworkQualityLevel) {
 
     }
 
