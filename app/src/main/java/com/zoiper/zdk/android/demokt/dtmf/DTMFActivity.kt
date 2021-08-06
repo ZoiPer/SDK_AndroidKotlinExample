@@ -120,6 +120,8 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
         accountConfig.password(PASSWORD)
         accountConfig.type(ProtocolType.SIP)
         accountConfig.reregistrationTime(60)
+        accountConfig.dtmfBand(DTMF_TYPE)
+        accountConfig.dtmfAutoplayDevice(AudioOutputDeviceType.Normal)
 
         accountConfig.sip(sipConfig)
 
@@ -131,7 +133,6 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
 
         sipConfig.transport(TransportType.UDP)
         sipConfig.domain(DOMAIN)
-        sipConfig.dtmf(DTMF_TYPE)
         sipConfig.rPort(RPortType.SignalingAndMedia)
 
         return sipConfig
@@ -156,7 +157,6 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
     private fun enterDigit(digit: String) {
         try {
             val dtmfCode = DTMFCodes.fromInt(Integer.valueOf(digit))
-            call.playDTMFSound(dtmfCode)
             call.sendDTMF(dtmfCode)
 
             dtmfEtNumber.append(digit)
@@ -279,6 +279,6 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
         private const val USERNAME = "dtmfauto"
         private const val PASSWORD = "mnbv"
         private const val DOMAIN = "pbx.securax.net"
-        private val DTMF_TYPE = DTMFTypeSIP.SIP_info_numeric
+        private val DTMF_TYPE = DTMFType.MediaOutband
     }
 }
