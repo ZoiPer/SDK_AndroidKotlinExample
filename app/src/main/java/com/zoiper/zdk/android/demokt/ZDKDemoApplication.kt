@@ -111,6 +111,8 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
                 NetworkChangeReceiver.intentFilter()
             )
         }
+
+        zdkContext.encryptionConfiguration().globalZrtpCache(zrtpCacheFile.absolutePath)
     }
 
     private fun initializeZoiperContext(){
@@ -143,7 +145,6 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
 
             zdkContext.configuration().enableSIPReliableProvisioning(false)
             zdkContext.encryptionConfiguration().tlsConfig().secureSuite(TLSSecureSuiteType.SSLv2_v3)
-            zdkContext.encryptionConfiguration().globalZrtpCache(zrtpCacheFile.absolutePath)
 
             return zdkContext
         } catch (e: UnsatisfiedLinkError) {
