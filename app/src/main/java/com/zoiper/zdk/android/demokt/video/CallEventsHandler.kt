@@ -1,13 +1,19 @@
 package com.zoiper.zdk.android.demokt.video
 
 import android.os.Build
+import android.support.v7.app.AlertDialog
+import android.util.Log
+import android.widget.Toast
 import com.zoiper.zdk.Call
 import com.zoiper.zdk.CallStatus
 import com.zoiper.zdk.ExtendedError
 import com.zoiper.zdk.NetworkStatistics
+import com.zoiper.zdk.Types.CallMediaChannel
+import com.zoiper.zdk.Types.CallSecurityLevel
 import com.zoiper.zdk.Types.NetworkQualityLevel
 import com.zoiper.zdk.Types.OriginType
 import com.zoiper.zdk.Types.Zrtp.*
+import com.zoiper.zdk.android.demokt.ZDKTESTING
 
 /**
  * CallEventsHandler
@@ -52,28 +58,35 @@ class CallEventsHandler(private val activity: InVideoCallActivity) : com.zoiper.
         return
     }
 
-    override fun onCallZrtpFailed(call: Call?, extendedError: ExtendedError?) {
-        return
+    override fun onCallZrtpFailed(call: Call?, error: ExtendedError?) {
+        Log.d(ZDKTESTING, "onCallZrtpFailed: call= " + call!!.callHandle() + "; error= " + error?.message())
     }
 
-    override fun onCallZrtpSuccess(
-        call: Call?,
-        s: String?,
-        i: Int,
-        i1: Int,
-        i2: Int,
-        zrtpsasEncoding: ZRTPSASEncoding?,
-        s1: String?,
-        zrtpHashAlgorithm: ZRTPHashAlgorithm?,
-        zrtpCipherAlgorithm: ZRTPCipherAlgorithm?,
-        zrtpAuthTag: ZRTPAuthTag?,
-        zrtpKeyAgreement: ZRTPKeyAgreement?
-    ) {
-        return
+    override fun onCallZrtpSuccess(call: Call?, zidHex: String?, knownPeer: Int, cacheMismatch: Int, peerKnowsUs: Int, zrtpsasEncoding: ZRTPSASEncoding?,
+                                   sas: String?, zrtpHashAlgorithm: ZRTPHashAlgorithm?, zrtpCipherAlgorithm: ZRTPCipherAlgorithm?, zrtpAuthTag: ZRTPAuthTag?, zrtpKeyAgreement: ZRTPKeyAgreement? ) {
+        Log.d(ZDKTESTING, "onCallZrtpSuccess: call= " + call!!.callHandle())
+
+        if (knownPeer != 0 && cacheMismatch == 0 && peerKnowsUs != 0) {
+            activity.runOnUiThread { call!!.confirmZrtpSas(true) }
+        } else {
+            activity.runOnUiThread {
+                AlertDialog.Builder(activity)
+                        .setTitle("SAS Verification")
+                        .setMessage("SAS Verification is \"$sas\". Please compare the string with your peer!")
+                        .setPositiveButton("Confirm") { dialog, which -> call!!.confirmZrtpSas(true) }
+                        .setNegativeButton("Reject") { dialog, which -> call!!.confirmZrtpSas(false) }
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show()
+            }
+        }
     }
 
-    override fun onCallZrtpSecondaryError(call: Call?, i: Int, extendedError: ExtendedError?) {
-        return
+    override fun onCallZrtpSecondaryError(call: Call?, channel: Int, error: ExtendedError?) {
+        Log.d(ZDKTESTING, "onCallZrtpFailed: call= " + call!!.callHandle() + "; error= " + error?.message())
+    }
+
+    override fun onCallSecurityLevelChanged(call: Call?, channel: CallMediaChannel, level: CallSecurityLevel) {
+        Log.d(ZDKTESTING, "OnCallSecurityLevelChanged channel: $channel level: $level")
     }
 
     override fun onVideoStopped(call: Call?, origin: OriginType?) {
