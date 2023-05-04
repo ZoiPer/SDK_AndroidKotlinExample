@@ -13,6 +13,7 @@ import com.zoiper.zdk.SecureCertData
 import com.zoiper.zdk.Types.*
 import com.zoiper.zdk.android.demokt.network.NetworkChangeReceiver
 import com.zoiper.zdk.android.demokt.util.Credentials
+import com.zoiper.zdk.android.demokt.util.generateDebugLogFilename
 import java.io.File
 
 /**
@@ -126,12 +127,15 @@ class ZDKDemoApplication : Application(), ContextEventsHandler{
             Log.d(ZDKTESTING, "zdkContext = new Context(applicationContext)")
 
             if (ENABLE_LIB_DEBUG_LOG) {
-                zdkContext.logger().logOpen(
-                    File(filesDir, "logs.txt").absolutePath,
-                    null,
-                    LoggingLevel.Debug,
-                    0
-                )
+                val logNameWithFullPath = generateDebugLogFilename(this)
+                if (logNameWithFullPath.isNotEmpty()) {
+                    zdkContext.logger().logOpen(
+                            logNameWithFullPath,
+                            null,
+                            LoggingLevel.Debug,
+                            0
+                    )
+                }
             }
 
             // Make sure you have both

@@ -26,7 +26,7 @@ import com.zoiper.zdk.android.demokt.dtmf.DTMFActivity
 import com.zoiper.zdk.android.demokt.incoming.IncomingCallActivity
 import com.zoiper.zdk.android.demokt.messages.InMessagesActivity
 import com.zoiper.zdk.android.demokt.probe.SipTransportProbeActivity
-import com.zoiper.zdk.android.demokt.util.LoggingUtils
+import com.zoiper.zdk.android.demokt.util.generateDebugLogFilename
 import com.zoiper.zdk.android.demokt.video.InVideoCallActivity
 import kotlinx.android.synthetic.main.card_calls.*
 import kotlinx.android.synthetic.main.card_profile.*
@@ -129,8 +129,13 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
             logStarted = false
             Toast.makeText(this, "Logging stopped !", Toast.LENGTH_LONG).show()
         } else {
-            val filename = LoggingUtils.generateDebugLogFilename(this)
-            zdkContext.logger().logOpen(filename, "", LoggingLevel.Stack, 0)
+            val filename = generateDebugLogFilename(this)
+            if (filename.isNotEmpty()) {
+                zdkContext.logger().logOpen(filename, "", LoggingLevel.Stack, 0)
+            } else {
+                Toast.makeText(this, "Cannot start log", Toast.LENGTH_LONG).show()
+                return
+            }
 
             btnLogging.setText(R.string.stop_log)
             logStarted = true
