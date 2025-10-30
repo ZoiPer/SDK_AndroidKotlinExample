@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <!--tools:context=".dtmf.DTMFActivity">-->
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".dtmf.DTMFActivity">
 
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -20,7 +20,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_dtmf"/>
+    <include
+        android:id="@+id/content"
+        layout="@layout/content_dtmf" />
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/dtmfFabHangup"

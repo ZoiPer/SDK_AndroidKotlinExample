@@ -34,6 +34,8 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_incoming_call"/>
+    <include
+        android:id="@+id/content"
+        layout="@layout/content_incoming_call"/>
 
 </android.support.design.widget.CoordinatorLayout>

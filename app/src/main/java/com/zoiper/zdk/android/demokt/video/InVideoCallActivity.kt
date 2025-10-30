@@ -19,11 +19,10 @@ import com.zoiper.zdk.EventHandlers.VideoRendererEventsHandler
 import com.zoiper.zdk.Types.VideoFrameFormat
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_NUMBER
-import com.zoiper.zdk.android.demokt.R
 import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
+import com.zoiper.zdk.android.demokt.databinding.ActivityInVideoCallBinding
 import com.zoiper.zdk.android.demokt.video.out.I420Helper
-import kotlinx.android.synthetic.main.activity_in_video_call.*
 import java.util.*
 
 
@@ -66,10 +65,12 @@ class InVideoCallActivity : BaseActivity() {
     // Image pre-processing
     private var i420Helper: I420Helper? = null
 
+    private lateinit var viewBinding: ActivityInVideoCallBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_in_video_call)
+        viewBinding = ActivityInVideoCallBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
         initLifecycleObservers()
         initImageReader()
@@ -111,14 +112,14 @@ class InVideoCallActivity : BaseActivity() {
             getAccount(accountId)?.let {account ->
                 val calls = queryActiveCalls(account)
 
-                call = createOrGetCall(account, calls, number)
+                call = createOrGetCall(account, calls, number!!) // crash with assert if this is null
 
                 call?.setCallStatusListener(CallEventsHandler(this))
 
                 call?.setVideoRendererNotificationsListener(object : VideoRendererEventsHandler {
                     override fun onVideoFrameReceived(pBuffer: ByteArray?, length: Int, width: Int, height: Int) {
                         pBuffer?.let {
-                            videoCallSvIn.renderI420YUV(it, width, height)
+                            viewBinding.videoCallSvIn.renderI420YUV(it, width, height)
                         }
                     }
                 })
@@ -142,11 +143,11 @@ class InVideoCallActivity : BaseActivity() {
     }
 
     private fun initLifecycleObservers() {
-        lifecycle.addObserver(videoCallSvIn)
+        lifecycle.addObserver(viewBinding.videoCallSvIn)
     }
 
-    internal fun printStatusThreadSafe(status: String) = mainHandler.post { videoCallTvStatus?.text = status }
-    internal fun printNetworkThreadSafe(status: String) = mainHandler.post { videoCallTvNetwork.text = status }
+    internal fun printStatusThreadSafe(status: String) = mainHandler.post { viewBinding.videoCallTvStatus?.text = status }
+    internal fun printNetworkThreadSafe(status: String) = mainHandler.post { viewBinding.videoCallTvNetwork.text = status }
 
     internal fun printGeneralThreadSafe(text: String) = mainHandler.post{ Log.i(ZDKTESTING, text) }
 
@@ -218,7 +219,7 @@ class InVideoCallActivity : BaseActivity() {
     private fun cameraStarted(camera: CameraDevice) {
         val surfaces = ArrayList<Surface>()
 
-        surfaces.add(videoCallSvOut.holder.surface)
+        surfaces.add(viewBinding.videoCallSvOut.holder.surface)
         imageReader.surface?.let { surfaces.add(it) }
 
         camera.createCaptureSession(surfaces, object : CameraCaptureSession.StateCallback() {
@@ -242,7 +243,7 @@ class InVideoCallActivity : BaseActivity() {
     private fun captureSessionCreated(camera: CameraDevice, session: CameraCaptureSession) {
         val crb = camera.createCaptureRequest(CameraDevice.TEMPLATE_RECORD)
 
-        crb.addTarget(videoCallSvOut.holder.surface)
+        crb.addTarget(viewBinding.videoCallSvOut.holder.surface)
         imageReader.surface?.let { crb.addTarget(it) }
 
         val captureRequest = crb.build()

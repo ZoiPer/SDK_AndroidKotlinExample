@@ -12,8 +12,7 @@ import com.zoiper.zdk.Types.TransportType
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.R
 import com.zoiper.zdk.android.demokt.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_sip_transport_probe.*
-import kotlinx.android.synthetic.main.content_sip_transport_probe.*
+import com.zoiper.zdk.android.demokt.databinding.ActivitySipTransportProbeBinding
 
 /**
  *SipTransportProbeActivity
@@ -30,21 +29,24 @@ class SipTransportProbeActivity : BaseActivity(), SIPProbeEventsHandler {
         zdkContext.accountProvider().createUserAccount()
     }
 
+    private lateinit var viewBinding: ActivitySipTransportProbeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sip_transport_probe)
+        viewBinding = ActivitySipTransportProbeBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
-        setSupportActionBar(sipProbeToolbar)
+        setSupportActionBar(viewBinding.sipProbeToolbar)
         supportActionBar?.setTitle(R.string.sip_transport_probe)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        sipProbeFab.setOnClickListener {
+        viewBinding.sipProbeFab.setOnClickListener {
             Toast.makeText(this, "ZDK Context not loaded yet", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onZoiperLoaded() {
-        sipProbeFab.setOnClickListener {
+        viewBinding.sipProbeFab.setOnClickListener {
             account?.setProbeEventListener(this)
             account?.probeSipTransport(domain, null, username, null, password)
         }
@@ -66,15 +68,15 @@ class SipTransportProbeActivity : BaseActivity(), SIPProbeEventsHandler {
                             error: ExtendedError?) {
         updateTextView(when {
             probeState != null -> when(probeState) {
-                ProbeState.Udp -> sipProbeTvUdp
-                ProbeState.Tcp -> sipProbeTvTcp
-                ProbeState.Tls -> sipProbeTvTls
+                ProbeState.Udp -> viewBinding.content.sipProbeTvUdp
+                ProbeState.Tcp -> viewBinding.content.sipProbeTvTcp
+                ProbeState.Tls -> viewBinding.content.sipProbeTvTls
                 else -> return
             }
             transportType != null -> when(transportType) {
-                TransportType.UDP -> sipProbeTvUdp
-                TransportType.TCP -> sipProbeTvTcp
-                TransportType.TLS -> sipProbeTvTls
+                TransportType.UDP -> viewBinding.content.sipProbeTvUdp
+                TransportType.TCP -> viewBinding.content.sipProbeTvTcp
+                TransportType.TLS -> viewBinding.content.sipProbeTvTls
                 else -> return
             }
             else -> return

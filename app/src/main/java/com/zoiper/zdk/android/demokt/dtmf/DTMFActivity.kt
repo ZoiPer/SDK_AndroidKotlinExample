@@ -16,17 +16,16 @@ import com.zoiper.zdk.Providers.AccountProvider
 import com.zoiper.zdk.Types.*
 import com.zoiper.zdk.Types.Zrtp.*
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_NUMBER
-import com.zoiper.zdk.android.demokt.R
 import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_dtmf.*
-import kotlinx.android.synthetic.main.content_dtmf.*
+import com.zoiper.zdk.android.demokt.databinding.ActivityDtmfBinding
 import java.lang.IllegalArgumentException
 
 class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
     private lateinit var account: Account
+    private lateinit var viewBinding: ActivityDtmfBinding
 
-    private val number by lazy { intent.getStringExtra(INTENT_EXTRA_NUMBER) }
+    private val number by lazy { intent.getStringExtra(INTENT_EXTRA_NUMBER) ?: "" }
 
     private lateinit var call: Call
     private var callStarted = false
@@ -44,9 +43,10 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dtmf)
+        viewBinding = ActivityDtmfBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
-        setSupportActionBar(dtmfToolbar)
+        setSupportActionBar(viewBinding.dtmfToolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "DTMF"
@@ -56,14 +56,14 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
 
     private fun setListeners() {
         listOf(
-            dtmfBtn1,    dtmfBtn2, dtmfBtn3,
-            dtmfBtn4,    dtmfBtn5, dtmfBtn6,
-            dtmfBtn7,    dtmfBtn8, dtmfBtn9,
-            dtmfBtnStar, dtmfBtn0, dtmfBtnHash
+            viewBinding.content.dtmfBtn1, viewBinding.content.dtmfBtn2, viewBinding.content.dtmfBtn3,
+            viewBinding.content.dtmfBtn4, viewBinding.content.dtmfBtn5, viewBinding.content.dtmfBtn6,
+            viewBinding.content.dtmfBtn7, viewBinding.content.dtmfBtn8, viewBinding.content.dtmfBtn9,
+            viewBinding.content.dtmfBtnStar, viewBinding.content.dtmfBtn0, viewBinding.content.dtmfBtnHash
         ).forEach { it.setOnClickListener(this::onDialerClick) }
 
-        dtmfFabHangup.setOnClickListener { hangup() }
-        dtmfBtnDelete.setOnClickListener { deleteDigit() }
+        viewBinding.dtmfFabHangup.setOnClickListener { hangup() }
+        viewBinding.content.dtmfBtnDelete.setOnClickListener { deleteDigit() }
     }
 
     override fun onZoiperLoaded() = initAccount()
@@ -75,16 +75,16 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
 
         call = account.createCall(number, true, false)
 
-        dtmfFabHangup.show()
-        dtmfTvCallStatus.text = "Created"
+        viewBinding.dtmfFabHangup.show()
+        viewBinding.content.dtmfTvCallStatus.text = "Created"
 
         call.setCallStatusListener(this@DTMFActivity)
         setAudioMode(AudioManager.MODE_IN_COMMUNICATION)
     }
 
     private fun onCallActive(){
-        dtmfClRinging.visibility = View.GONE
-        dtmfClDialer.visibility = View.VISIBLE
+        viewBinding.content.dtmfClRinging.visibility = View.GONE
+        viewBinding.content.dtmfClDialer.visibility = View.VISIBLE
     }
 
     @SuppressLint("SetTextI18n")
@@ -93,10 +93,10 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
         val sipConfig = createSipConfig(accountProvider)
         val accConfig = createAccountConfig(accountProvider, sipConfig)
 
-        dtmfTvAccountStatus.text = "Creating account"
+        viewBinding.content.dtmfTvAccountStatus.text = "Creating account"
         account = accountProvider.createUserAccount()
 
-        dtmfTvAccountStatus.text = "Configuring"
+        viewBinding.content.dtmfTvAccountStatus.text = "Configuring"
         account.setStatusEventListener(this@DTMFActivity)
 
         account.accountName(USERNAME)
@@ -106,10 +106,10 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
         // and everything you set in it, wont matter.
         account.configuration(accConfig)
 
-        dtmfTvAccountStatus.text = "Creating user"
+        viewBinding.content.dtmfTvAccountStatus.text = "Creating user"
         account.createUser()
 
-        dtmfTvAccountStatus.text = "Registering"
+        viewBinding.content.dtmfTvAccountStatus.text = "Registering"
         account.registerAccount()
     }
 
@@ -151,9 +151,9 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
     }
 
     private fun deleteDigit() {
-        val length = dtmfEtNumber.text.length
+        val length = viewBinding.content.dtmfEtNumber.text.length
         if (length > 0) {
-            dtmfEtNumber.text.delete(length - 1, length)
+            viewBinding.content.dtmfEtNumber.text.delete(length - 1, length)
         }
     }
 
@@ -162,7 +162,7 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
             val dtmfCode = DTMFCodes.fromInt(Integer.valueOf(digit))
             call.sendDTMF(dtmfCode)
 
-            dtmfEtNumber.append(digit)
+            viewBinding.content.dtmfEtNumber.append(digit)
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
         }
@@ -186,8 +186,8 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
         }
 
         runOnUiThread{
-            dtmfTvCallStatus.text = lineStatus.toString()
-            dtmfTvAccountStatus.text = lineStatus.toString()
+            viewBinding.content.dtmfTvCallStatus.text = lineStatus.toString()
+            viewBinding.content.dtmfTvAccountStatus.text = lineStatus.toString()
         }
     }
 
@@ -250,15 +250,15 @@ class DTMFActivity : BaseActivity(), CallEventsHandler, AccountEventsHandler {
         if(accountStatus == AccountStatus.Registered) runOnUiThread(this::startCall)
 
         runOnUiThread {
-            dtmfTvAccountStatus.text = accountStatus.toString()
-            dtmfTvAccountCode.text = "$i"
+            viewBinding.content.dtmfTvAccountStatus.text = accountStatus.toString()
+            viewBinding.content.dtmfTvAccountCode.text = "$i"
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onAccountRetryingRegistration(account: Account?, i: Int, i1: Int) {
         runOnUiThread{
-            dtmfTvAccountStatus.text = "Retrying registration"
+            viewBinding.content.dtmfTvAccountStatus.text = "Retrying registration"
         }
     }
 

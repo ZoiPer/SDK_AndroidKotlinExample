@@ -19,9 +19,8 @@ import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.R
 import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
+import com.zoiper.zdk.android.demokt.databinding.ActivityIncomingCallBinding
 import com.zoiper.zdk.android.demokt.util.TextViewSelectionUtils
-import kotlinx.android.synthetic.main.activity_incoming_call.*
-import kotlinx.android.synthetic.main.content_incoming_call.*
 
 /**
  * IncomingCallActivity
@@ -34,23 +33,26 @@ class IncomingCallActivity : BaseActivity(), AccountEventsHandler, CallEventsHan
         getAccount(longExtra)
     }
 
+    private lateinit var viewBinding: ActivityIncomingCallBinding
+
     private var call: Call? = null
 
     private var ringtone: Ringtone? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_incoming_call)
+        viewBinding = ActivityIncomingCallBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
-        setSupportActionBar(incomingToolbar)
+        setSupportActionBar(viewBinding.incomingToolbar)
 
         supportActionBar?.apply{
             title = "Incoming call"
             setDisplayHomeAsUpEnabled(true)
         }
 
-        incomingTvSpeaker.isSelected = false
-        incomingTvMute.isSelected = false
+        viewBinding.content.incomingTvSpeaker.isSelected = false
+        viewBinding.content.incomingTvMute.isSelected = false
     }
 
     override fun onZoiperLoaded() {
@@ -58,13 +60,13 @@ class IncomingCallActivity : BaseActivity(), AccountEventsHandler, CallEventsHan
     }
 
     private fun setupIncomingCallView() {
-        incomingTvWaiting.visibility = View.GONE
-        incomingRlBase.visibility = View.VISIBLE
+        viewBinding.content.incomingTvWaiting.visibility = View.GONE
+        viewBinding.content.incomingRlBase.visibility = View.VISIBLE
 
-        incomingTvSpeaker.setOnClickListener(this::onSpeakerClicked)
-        incomingTvMute.setOnClickListener (this::onMuteClicked)
-        incomingBtnAnswer.setOnClickListener { onAnswerButtonClicked() }
-        incomingBtnHangup.setOnClickListener { onHangupButtonClicked() }
+        viewBinding.content.incomingTvSpeaker.setOnClickListener(this::onSpeakerClicked)
+        viewBinding.content.incomingTvMute.setOnClickListener (this::onMuteClicked)
+        viewBinding.content.incomingBtnAnswer.setOnClickListener { onAnswerButtonClicked() }
+        viewBinding.content.incomingBtnHangup.setOnClickListener { onHangupButtonClicked() }
     }
 
     private fun onHangupButtonClicked() {
@@ -119,7 +121,7 @@ class IncomingCallActivity : BaseActivity(), AccountEventsHandler, CallEventsHan
         this.call = call
 
         ring()
-        incomingTvStatus.text = getString(R.string.ringing)
+        viewBinding.content.incomingTvStatus.text = getString(R.string.ringing)
         this.call?.setCallStatusListener(this)
         setupIncomingCallView()
         // Set caller name.
@@ -127,7 +129,7 @@ class IncomingCallActivity : BaseActivity(), AccountEventsHandler, CallEventsHan
             R.string.incoming_call_from,
             "\n${call?.calleeName()}(${call?.calleeNumber()})"
         )
-        incomingTvFrom.text = incomingName
+        viewBinding.content.incomingTvFrom.text = incomingName
         setAudioMode(AudioManager.MODE_IN_COMMUNICATION)
     }
 
@@ -177,7 +179,7 @@ class IncomingCallActivity : BaseActivity(), AccountEventsHandler, CallEventsHan
             runOnUiThread { ringtone?.stop() }
         }
 
-        runOnUiThread { incomingTvStatus.text = callStatus?.lineStatus().toString() }
+        runOnUiThread { viewBinding.content.incomingTvStatus.text = callStatus?.lineStatus().toString() }
     }
 
     override fun onCallExtendedError(call: Call?, extendedError: ExtendedError?) {

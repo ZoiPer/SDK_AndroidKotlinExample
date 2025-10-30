@@ -4,16 +4,13 @@ import android.annotation.SuppressLint
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.zoiper.zdk.Call
 import com.zoiper.zdk.Conference
 import com.zoiper.zdk.EventHandlers.ConferenceEventsHandler
 import com.zoiper.zdk.Types.CallLineStatus
-import com.zoiper.zdk.android.demokt.R
+import com.zoiper.zdk.android.demokt.databinding.CallItemBinding
 import com.zoiper.zdk.android.demokt.util.TextViewSelectionUtils
-import kotlinx.android.synthetic.main.call_item.view.*
 import java.util.ArrayList
 
 /**
@@ -72,12 +69,13 @@ class CallAdapter : RecyclerView.Adapter<CallAdapter.CallViewHolder>(), Conferen
 //    }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): CallViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.call_item,
+        val itemViewBinding = CallItemBinding.inflate(
+            LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return CallViewHolder(view)
+
+        return CallViewHolder(itemViewBinding)
     }
 
     override fun onBindViewHolder(viewHolder: CallViewHolder, position: Int) = viewHolder.bind(callList[position])
@@ -127,16 +125,16 @@ class CallAdapter : RecyclerView.Adapter<CallAdapter.CallViewHolder>(), Conferen
 //        return false
 //    }
 
-    inner class CallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CallViewHolder(private val viewBinding: CallItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
         @SuppressLint("SetTextI18n")
         internal fun bind(call: Call) {
-            itemView.callItemTvName.text = "${call.calleeName()} (${call.calleeNumber()})"
-            itemView.callItemTvStatus.text = call.status().lineStatus().toString()
-            itemView.callItemTvCount.text = "$itemCount"
+            viewBinding.callItemTvName.text = "${call.calleeName()} (${call.calleeNumber()})"
+            viewBinding.callItemTvStatus.text = call.status().lineStatus().toString()
+            viewBinding.callItemTvCount.text = "$itemCount"
 
-//            itemView.callItemTvMute.setOnClickListener { muteCall(call, it) }
-//            itemView.callItemTvRemove.setOnClickListener { removeCall(call) }
+//            viewBinding.callItemTvMute.setOnClickListener { muteCall(call, it) }
+//            viewBinding.callItemTvRemove.setOnClickListener { removeCall(call) }
         }
 
         /**
@@ -146,7 +144,7 @@ class CallAdapter : RecyclerView.Adapter<CallAdapter.CallViewHolder>(), Conferen
          * The call line status object.
          */
         fun bindCallStatus(payload: CallLineStatus) {
-            itemView.callItemTvStatus.text = payload.toString()
+            viewBinding.callItemTvStatus.text = payload.toString()
         }
     }
 }

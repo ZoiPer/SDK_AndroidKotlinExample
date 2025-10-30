@@ -11,10 +11,9 @@ import com.zoiper.zdk.Types.MessageType
 import com.zoiper.zdk.Types.ResultCode
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_NUMBER
-import com.zoiper.zdk.android.demokt.R
 import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_in_messages.*
+import com.zoiper.zdk.android.demokt.databinding.ActivityInMessagesBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,13 +30,16 @@ class InMessagesActivity : BaseActivity(), MessageEventsHandler, AccountEventsHa
     }
 
     private val messagesAdapter by lazy { MessagesAdapter{
-        inMessagesRvMessages.scrollToPosition(it)
+        viewBinding.inMessagesRvMessages.scrollToPosition(it)
     }}
+
+    private lateinit var viewBinding: ActivityInMessagesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_in_messages)
-        setSupportActionBar(inMessagesToolbar)
+        viewBinding = ActivityInMessagesBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
+        setSupportActionBar(viewBinding.inMessagesToolbar)
 
         val number = intent.getStringExtra(INTENT_EXTRA_NUMBER)
 
@@ -46,26 +48,26 @@ class InMessagesActivity : BaseActivity(), MessageEventsHandler, AccountEventsHa
 
         initRecycler()
 
-        inMessagesFab.setOnClickListener { _ ->
-            inMessagesEtMessage
+        viewBinding.inMessagesFab.setOnClickListener { _ ->
+            viewBinding.inMessagesEtMessage
                 .text
                 .toString()
                 .trim()
                 .ifBlank {
-                    inMessagesEtMessage.error = "Please enter message"
+                    viewBinding.inMessagesEtMessage.error = "Please enter message"
                     null
                 }
-                ?.apply { inMessagesEtMessage.error = null }
+                ?.apply { viewBinding.inMessagesEtMessage.error = null }
                 ?.let{
-                    val result = sendMessage(it, number)
+                    val result = sendMessage(it, number!!)
 
                     if(result?.code() == ResultCode.Ok){
                         messagesAdapter.addMessage(MessagesAdapter.BaseMessage(it, getCurrentTimeUsingCalendar()))
 
-                        inMessagesEtMessage.setText("")
-                        inMessagesEtMessage.clearFocus()
-                    }else{
-                        inMessagesEtMessage.error = "Error sending message"
+                        viewBinding.inMessagesEtMessage.setText("")
+                        viewBinding.inMessagesEtMessage.clearFocus()
+                    } else {
+                        viewBinding.inMessagesEtMessage.error = "Error sending message"
                     }
                 }
         }
@@ -110,9 +112,9 @@ class InMessagesActivity : BaseActivity(), MessageEventsHandler, AccountEventsHa
     }
 
     private fun initRecycler() {
-        inMessagesRvMessages.adapter = messagesAdapter
+        viewBinding.inMessagesRvMessages.adapter = messagesAdapter
 
-        inMessagesRvMessages.layoutManager = LinearLayoutManager(
+        viewBinding.inMessagesRvMessages.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,
             true

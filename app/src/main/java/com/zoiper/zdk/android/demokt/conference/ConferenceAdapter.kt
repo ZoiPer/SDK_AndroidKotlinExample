@@ -14,8 +14,7 @@ import com.zoiper.zdk.EventHandlers.ConferenceEventsHandler
 import com.zoiper.zdk.EventHandlers.ConferenceProviderEventsHandler
 import com.zoiper.zdk.Providers.ConferenceProvider
 import com.zoiper.zdk.Types.CallLineStatus
-import com.zoiper.zdk.android.demokt.R
-import kotlinx.android.synthetic.main.conference_item.view.*
+import com.zoiper.zdk.android.demokt.databinding.ConferenceItemBinding
 
 /**
  * ConferenceAdapter
@@ -90,11 +89,12 @@ class ConferenceAdapter(
     override fun onBindViewHolder(viewHolder: ConferenceHolder, position: Int) = viewHolder.bind(conferenceList[position])
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ConferenceHolder {
-        return ConferenceHolder(LayoutInflater.from(parent.context).inflate(
-            R.layout.conference_item,
+        val conferenceViewBinding = ConferenceItemBinding.inflate(
+            LayoutInflater.from(parent.context),
             parent,
             false
-        ))
+        )
+        return ConferenceHolder(conferenceViewBinding)
     }
 
     override fun getItemCount() = conferenceList.size
@@ -174,20 +174,20 @@ class ConferenceAdapter(
 //        }
 //    }
 
-    inner class ConferenceHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ConferenceHolder(private val viewBinding: ConferenceItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
         fun bind(conference: Conference){
 
             val callAdapter = CallAdapter()
 
 //            conference.setConferenceEventsListener(callAdapter)
 
-            itemView.conferenceItemTvCount.text = itemCount.toString()
+            viewBinding.conferenceItemTvCount.text = itemCount.toString()
 
-            itemView.conferenceItemTvAddCall.setOnClickListener { addCall(conference) }
-            itemView.conferenceItemTvRemove.setOnClickListener { conference.hangUp() }
+            viewBinding.conferenceItemTvAddCall.setOnClickListener { addCall(conference) }
+            viewBinding.conferenceItemTvRemove.setOnClickListener { conference.hangUp() }
 
-            itemView.conferenceItemRvCalls.adapter = callAdapter
-            itemView.conferenceItemRvCalls.layoutManager = LinearLayoutManager(
+            viewBinding.conferenceItemRvCalls.adapter = callAdapter
+            viewBinding.conferenceItemRvCalls.layoutManager = LinearLayoutManager(
                 itemView.context,
                 LinearLayoutManager.VERTICAL,
                 false

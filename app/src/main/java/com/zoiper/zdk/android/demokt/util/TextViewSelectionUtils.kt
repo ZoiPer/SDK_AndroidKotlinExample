@@ -43,7 +43,7 @@ object TextViewSelectionUtils {
      */
     private fun getThemeAccentColor(context: Context): Int {
         val value = TypedValue()
-        context.theme.resolveAttribute(R.attr.colorAccent, value, true)
+        context.theme.resolveAttribute(R.color.colorAccent, value, true)
         return value.data
     }
 

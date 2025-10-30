@@ -18,17 +18,16 @@ import com.zoiper.zdk.Types.ResultCode
 import com.zoiper.zdk.Types.Zrtp.*
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_NUMBER
-import com.zoiper.zdk.android.demokt.R
 import com.zoiper.zdk.android.demokt.ZDKTESTING
 import com.zoiper.zdk.android.demokt.base.BaseActivity
+import com.zoiper.zdk.android.demokt.databinding.ActivityInCallBinding
 import com.zoiper.zdk.android.demokt.util.DensityPixelUtils
 import com.zoiper.zdk.android.demokt.util.TextViewSelectionUtils
 import com.zoiper.zdk.android.demokt.util.TimerDuration
-import kotlinx.android.synthetic.main.activity_in_call.*
-import kotlinx.android.synthetic.main.in_call_button_layout.*
 
 class InCallActivity : BaseActivity(), CallEventsHandler {
 
+    private lateinit var viewBinding: ActivityInCallBinding
     private var call: Call? = null
 
     private val recordingFilePath by lazy {
@@ -38,7 +37,7 @@ class InCallActivity : BaseActivity(), CallEventsHandler {
     private val timerDuration: TimerDuration by lazy {
         TimerDuration(
             mainHandler,
-            inCallTvTimer
+            viewBinding.inCallTvTimer
         )
     }
 
@@ -49,9 +48,10 @@ class InCallActivity : BaseActivity(), CallEventsHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_in_call)
+        viewBinding = ActivityInCallBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
-        setSupportActionBar(inCallToolbar)
+        setSupportActionBar(viewBinding.inCallToolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "In call"
@@ -68,14 +68,14 @@ class InCallActivity : BaseActivity(), CallEventsHandler {
     }
 
     private fun setupViews() {
-        inCallFab.setOnClickListener { call?.hangUp() }
+        viewBinding.inCallFab.setOnClickListener { call?.hangUp() }
 
-        inCallBtnMute.setOnClickListener { toggleMute(it as TextView, it.isSelected) }
-        inCallBtnHold.setOnClickListener { toggleHold(it as TextView, it.isSelected) }
-        inCallBtnRecord.setOnClickListener { toggleRecord(it as TextView, it.isSelected) }
-        inCallBtnSpeaker.setOnClickListener { toggleSpeaker(it as TextView, it.isSelected) }
+        viewBinding.inCallBtnLayout.inCallBtnMute.setOnClickListener { toggleMute(it as TextView, it.isSelected) }
+        viewBinding.inCallBtnLayout.inCallBtnHold.setOnClickListener { toggleHold(it as TextView, it.isSelected) }
+        viewBinding.inCallBtnLayout.inCallBtnRecord.setOnClickListener { toggleRecord(it as TextView, it.isSelected) }
+        viewBinding.inCallBtnLayout.inCallBtnSpeaker.setOnClickListener { toggleSpeaker(it as TextView, it.isSelected) }
 
-        inCallBtnTransfer.setOnClickListener { transferCall() }
+        viewBinding.inCallBtnLayout.inCallBtnTransfer.setOnClickListener { transferCall() }
     }
 
     private fun transferCall() {
@@ -190,5 +190,5 @@ class InCallActivity : BaseActivity(), CallEventsHandler {
         Log.d(ZDKTESTING, "OnCallSecurityLevelChanged channel: $channel level: $level")
     }
 
-    private fun printStatusThreadSafe(message: String) = runOnUiThread { inCallTvCallState.text = message }
+    private fun printStatusThreadSafe(message: String) = runOnUiThread { viewBinding.inCallTvCallState.text = message }
 }

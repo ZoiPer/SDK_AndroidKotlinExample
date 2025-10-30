@@ -22,14 +22,13 @@ import com.zoiper.zdk.android.demokt.base.BaseActivity
 import com.zoiper.zdk.android.demokt.base.getTextOrError
 import com.zoiper.zdk.android.demokt.call.InCallActivity
 import com.zoiper.zdk.android.demokt.conference.ConferenceActivity
+import com.zoiper.zdk.android.demokt.databinding.ActivityMainBinding
 import com.zoiper.zdk.android.demokt.dtmf.DTMFActivity
 import com.zoiper.zdk.android.demokt.incoming.IncomingCallActivity
 import com.zoiper.zdk.android.demokt.messages.InMessagesActivity
 import com.zoiper.zdk.android.demokt.probe.SipTransportProbeActivity
 import com.zoiper.zdk.android.demokt.util.generateDebugLogFilename
 import com.zoiper.zdk.android.demokt.video.InVideoCallActivity
-import kotlinx.android.synthetic.main.card_calls.*
-import kotlinx.android.synthetic.main.card_profile.*
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -48,6 +47,8 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
 
     private var logStarted = false;
 
+    private lateinit var activityViewBinding: ActivityMainBinding
+
     override fun onAccountStatusChanged(account: Account?, status: AccountStatus?, statusCode: Int) {
 //        Log.d(ZDKTESTING, "MainActivity.onAccountStatusChanged()")
         mainHandler.post{ this@MainActivity.printCurrentRegistrationStatus() }
@@ -62,7 +63,8 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        activityViewBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityViewBinding.root)
 
         setClickListeners()
     }
@@ -72,18 +74,18 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
     }
 
     private fun setClickListeners() {
-        btnCreate.setOnClickListener { createAccount(zdkContext) }
-        btnRegister.setOnClickListener { registerUser(zdkContext) }
-        btnUnregister.setOnClickListener { account?.unRegister() }
+        activityViewBinding.registrationLayout.btnCreate.setOnClickListener { createAccount(zdkContext) }
+        activityViewBinding.registrationLayout.btnRegister.setOnClickListener { registerUser(zdkContext) }
+        activityViewBinding.registrationLayout.btnUnregister.setOnClickListener { account?.unRegister() }
 
-        btnConference.setOnClickListener { startConferenceActivity() }
-        btnDialVideo.setOnClickListener { startVideoCallActivity() }
-        btnMessaging.setOnClickListener { startMessageActivity() }
-        btnIncoming.setOnClickListener { startIncomingActivity() }
-        btnProbe.setOnClickListener { startSipTransportProbe() }
-        btnDial.setOnClickListener { startCallActivity() }
-        btnDtmf.setOnClickListener { startDTMFActivity() }
-        btnLogging.setOnClickListener{ startLogging() }
+        activityViewBinding.makeCallLayout.btnConference.setOnClickListener { startConferenceActivity() }
+        activityViewBinding.makeCallLayout.btnDialVideo.setOnClickListener { startVideoCallActivity() }
+        activityViewBinding.makeCallLayout.btnMessaging.setOnClickListener { startMessageActivity() }
+        activityViewBinding.makeCallLayout.btnIncoming.setOnClickListener { startIncomingActivity() }
+        activityViewBinding.makeCallLayout.btnProbe.setOnClickListener { startSipTransportProbe() }
+        activityViewBinding.makeCallLayout.btnDial.setOnClickListener { startCallActivity() }
+        activityViewBinding.makeCallLayout.btnDtmf.setOnClickListener { startDTMFActivity() }
+        activityViewBinding.makeCallLayout.btnLogging.setOnClickListener{ startLogging() }
     }
 
     override fun onResume() {
@@ -98,7 +100,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
 
     private fun getNumberFromView(): String {
         // Get the number.
-        return etNumber.text.toString().trim { it <= ' ' }
+        return activityViewBinding.makeCallLayout.etNumber.text.toString().trim { it <= ' ' }
     }
 
     private fun printError(error: String) {
@@ -125,7 +127,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
 
     private fun startLogging() {
         if (logStarted) {
-            btnLogging.setText(R.string.start_log)
+            activityViewBinding.makeCallLayout.btnLogging.setText(R.string.start_log)
             logStarted = false
             Toast.makeText(this, "Logging stopped !", Toast.LENGTH_LONG).show()
         } else {
@@ -137,7 +139,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
                 return
             }
 
-            btnLogging.setText(R.string.stop_log)
+            activityViewBinding.makeCallLayout.btnLogging.setText(R.string.stop_log)
             logStarted = true
             Toast.makeText(this, "Logging started !", Toast.LENGTH_LONG).show();
         }
@@ -245,9 +247,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
     }
 
     private fun printStatus(status: String) {
-        if (tvStatus != null) {
-            tvStatus.text = status
-        }
+        activityViewBinding.registrationLayout.tvStatus.text = status
     }
 
     private fun createAccountConfig(
@@ -401,9 +401,9 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
     }
 
     private fun createAccount(context: Context) {
-        val hostname = etHostname.getTextOrError()
-        val username = etUsername.getTextOrError()
-        val password = etPassword.getTextOrError()
+        val hostname = activityViewBinding.registrationLayout.etHostname.getTextOrError()
+        val username = activityViewBinding.registrationLayout.etUsername.getTextOrError()
+        val password = activityViewBinding.registrationLayout.etPassword.getTextOrError()
 
         if (hostname == null || username == null || password == null) {
             return
@@ -432,7 +432,7 @@ class MainActivity : BaseActivity(), AccountEventsHandler {
 
             val createResult: Result? = account?.createUser()
             if (createResult != null) {
-                tvStatus.text = if (createResult.code() == ResultCode.Ok) "Created" else "Not Created"
+                activityViewBinding.registrationLayout.tvStatus.text = if (createResult.code() == ResultCode.Ok) "Created" else "Not Created"
             }
 
             Log.d(ZDKTESTING, "account.createUser() = ${createResult?.text()}")

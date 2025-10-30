@@ -2,11 +2,9 @@ package com.zoiper.zdk.android.demokt.messages
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.zoiper.zdk.android.demokt.R
-import kotlinx.android.synthetic.main.messages_incoming_layout.view.*
-import kotlinx.android.synthetic.main.messages_layout.view.*
+import com.zoiper.zdk.android.demokt.databinding.MessagesIncomingLayoutBinding
+import com.zoiper.zdk.android.demokt.databinding.MessagesLayoutBinding
 
 /**
  *MessagesAdapter
@@ -31,15 +29,15 @@ class MessagesAdapter(private val scrollTo: (position: Int) -> Unit) : RecyclerV
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ViewType.VIEW_TYPE_MESSAGE_SENT.value -> MessageHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.messages_layout,
+                MessagesLayoutBinding.inflate(
+                    LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
             ViewType.VIEW_TYPE_MESSAGE_RECEIVED.value -> ReceivedMessageHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.messages_incoming_layout,
+                MessagesIncomingLayoutBinding.inflate(
+                    LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
@@ -66,18 +64,18 @@ class MessagesAdapter(private val scrollTo: (position: Int) -> Unit) : RecyclerV
         else -> throw IllegalArgumentException("Unknown message type at position $position")
     }
 
-    inner class ReceivedMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ReceivedMessageHolder(private val viewBinding: MessagesIncomingLayoutBinding) : RecyclerView.ViewHolder(viewBinding.root) {
         fun bind(message: ReceivedMessage) {
-            itemView.messagesIncomingLayoutTvUsername.text = message.username
-            itemView.messagesIncomingLayoutTvBody.text = message.message
-            itemView.messagesIncomingLayoutTvTime.text = message.time
+            viewBinding.messagesIncomingLayoutTvUsername.text = message.username
+            viewBinding.messagesIncomingLayoutTvBody.text = message.message
+            viewBinding.messagesIncomingLayoutTvTime.text = message.time
         }
     }
 
-    inner class MessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MessageHolder(private val viewBinding: MessagesLayoutBinding) : RecyclerView.ViewHolder(viewBinding.root) {
         fun bind(message: BaseMessage) {
-            itemView.messagesLayoutTvBody.text = message.message
-            itemView.messagesLayoutTvTime.text = message.time
+            viewBinding.messagesLayoutTvBody.text = message.message
+            viewBinding.messagesLayoutTvTime.text = message.time
         }
     }
 

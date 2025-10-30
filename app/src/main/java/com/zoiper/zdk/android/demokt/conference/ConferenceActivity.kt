@@ -7,8 +7,8 @@ import com.zoiper.zdk.EventHandlers.CallEventsHandler
 import com.zoiper.zdk.android.demokt.INTENT_EXTRA_ACCOUNT_ID
 import com.zoiper.zdk.android.demokt.R
 import com.zoiper.zdk.android.demokt.base.BaseActivity
+import com.zoiper.zdk.android.demokt.databinding.ActivityConferenceBinding
 import com.zoiper.zdk.android.demokt.util.textPromptDialog
-import kotlinx.android.synthetic.main.activity_conference.*
 
 /**
  *ConferenceActivity
@@ -29,6 +29,8 @@ class ConferenceActivity : BaseActivity(), CallEventsHandler {
         )
     }
 
+    private lateinit var viewBinding: ActivityConferenceBinding
+
     private fun promptCreateCall(callback: (Call) -> Unit) {
         textPromptDialog(
             this,
@@ -45,15 +47,16 @@ class ConferenceActivity : BaseActivity(), CallEventsHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_conference)
-        setSupportActionBar(conferenceToolbar)
+        viewBinding = ActivityConferenceBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
+        setSupportActionBar(viewBinding.conferenceToolbar)
 
         supportActionBar?.setTitle(R.string.conference)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        conferenceRvConferences.adapter = conferenceAdapter
+        viewBinding.conferenceRvConferences.adapter = conferenceAdapter
 
-        conferenceRvConferences.layoutManager = LinearLayoutManager(
+        viewBinding.conferenceRvConferences.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,
             false
@@ -61,7 +64,7 @@ class ConferenceActivity : BaseActivity(), CallEventsHandler {
     }
 
     override fun onZoiperLoaded() {
-        conferenceFabAdd.setOnClickListener { promptAddConference() }
+        viewBinding.conferenceFabAdd.setOnClickListener { promptAddConference() }
 
         zdkContext
             .conferenceProvider()

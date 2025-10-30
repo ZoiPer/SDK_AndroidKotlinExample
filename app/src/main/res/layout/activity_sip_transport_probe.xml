@@ -21,7 +21,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_sip_transport_probe"/>
+    <include
+        android:id="@+id/content"
+        layout="@layout/content_sip_transport_probe"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/sipProbeFab"
