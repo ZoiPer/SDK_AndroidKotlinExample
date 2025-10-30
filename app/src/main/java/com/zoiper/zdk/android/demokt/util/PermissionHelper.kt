@@ -44,14 +44,12 @@ class PermissionHelper(private val activity: Activity) {
             Manifest.permission.CAMERA,
             Manifest.permission.CALL_PHONE,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
         ), PERMISSIONS_REQUEST_ID)
     }
 
     private fun hasAllPermissions() = hasPermission(Manifest.permission.CAMERA) &&
                                         hasPermission(Manifest.permission.CALL_PHONE) &&
-                                        hasPermission(Manifest.permission.RECORD_AUDIO) &&
-                                        hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                        hasPermission(Manifest.permission.RECORD_AUDIO)
 
     companion object {
         private const val PERMISSIONS_REQUEST_ID = 1
